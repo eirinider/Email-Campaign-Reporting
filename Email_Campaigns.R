@@ -1,4 +1,4 @@
-##### Bl Assignment #####
+##### BL Assignment #####
 ### Eirini Dernika ###
 
 # Step 1: Loading the dataset.
@@ -72,10 +72,39 @@ length(which(indexNA==FALSE))
 
 
 # Step 4: View summary statistics and descriptive measures about the variables.
+# Please note that due to small size of the datasets, some results could be also easily extracted by simple manipulation in excel.
 
 summary(email_activity)
 summary(email_campaigns)
 summary(email_lists)
+
+# Response/Action Rate
+# Summary of email_activity$action
+(summary(email_activity$action)/length(email_activity$action))*100
+
+# Bounce Rate
+# Summary soft and hard Bounces
+(summary(email_activity$type)/length(which(email_activity$action=="bounce")==TRUE))*100
+
+# Summary of email_activity$list_id
+(summary(email_activity$list_id)/length(email_activity$list_id))*100
+
+# Subscribe Rate
+# Summary of email_lists$status
+(summary(email_lists$status)/length(email_lists$status))*100
+
+# Lists and campaigns
+levels(email_campaigns$recipients_list_id)
+id_list_rates <- email_campaigns[,c(2,3,4,5)]
+order(id_list_rates, partial = as.vector(id_list_rates$report_summary_open_rate), decreasing = FALSE)
+
+# View email clients
+sort(summary(email_lists$email_client), decreasing = TRUE)
+sort(summary(email_lists$email_client)/length(email_lists$email_client)*100, decreasing = TRUE)
+
+# View locations
+sort(summary(email_lists$location_country_code), decreasing = TRUE)
+sort(summary(email_lists$location_timezone), decreasing = TRUE)
 
 
 # Step 5: Plotting interesting results.
@@ -90,4 +119,4 @@ legend("topright",c("74.17% List1 with id=180b7eeb41", "1.35% List2 with id=9375
 
 # graphical representation of email_lists$status in percentages
 barplot(((summary(email_lists$status)/1649)*100), ylim = c(0,100), main = "Status of Email lists", col = c("gray", "gray50", "gray32", "gray 15"))
-legend("topleft",c("3.15% cleaned", "2.55% pending", "81.75% subscribed ", "12.73% unsubscribed"), col = c("gray", "gray50", "gray32", "gray 15"), pch=15)
+legend("topleft",c("3.15% cleaned", "2.48% pending", "81.68% subscribed ", "12.67% unsubscribed"), col = c("gray", "gray50", "gray32", "gray 15"), pch=15)
